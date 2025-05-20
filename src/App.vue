@@ -4,7 +4,9 @@ import Task from './components/Task.vue';
 import Filter from './components/Filter.vue';
 import ModalWindow from './components/modal/ModalWindow.vue';
 import AddTaskModal from './components/modal/AddTaskModal.vue';
+import {useTasksStore} from './stores/tasksStore.js';
 
+const store = useTasksStore ();
 
 
 
@@ -16,11 +18,11 @@ let modalIsActive = ref(false);
 const filteredTasks = computed(()=>{
   switch(filterBy.value){
     case 'todo':
-      return tasks.filter(task => !task.completed);
+      return store.tasks.filter(task => !task.completed);
     case 'done':
-    return tasks.filter(task => task.completed);
+    return store.tasks.filter(task => task.completed);
     default:
-      return tasks;
+      return store.tasks;
   }
 })
 
@@ -71,8 +73,8 @@ let tasks= reactive([
 
 function addTask(){
   if(newTask.name && newTask.description){
-    newTask.id = Math.max(...tasks.map(task => task.id)) + 1; // the biggest id
-    tasks.push(newTask);
+    newTask.id = Math.max(...store.tasks.map(task => task.id)) + 1; // the biggest id
+    store.tasks.push(newTask);
     newTask = {completed:false};
   }else
   alert("They are Blank")
@@ -81,7 +83,7 @@ function toggleCompleted(id){
   // console.log('id', id)
   tasks.forEach(task =>{
     if(task.id === id){
-      task.completed =!task.completed;
+      store.task.completed =!task.completed;
     }
   })
 }
