@@ -1,58 +1,88 @@
 <script setup>
-import { reactive} from 'vue';
+import { reactive, ref, computed} from 'vue';
 import Task from './components/Task.vue'
+import Filter from './components/Filter.vue'
+
 
 //ref for primitiv, numbers, string booleans
 const appName = "Tasks Manager";
-let newTask = {completed:false}
+let newTask = {completed:false};
+let filterBy = ref("todo");
+const filteredTasks = computed(()=>{
+  switch(filterBy.value){
+    case 'todo':
+      return tasks.filter(task => !task.completed);
+    case 'done':
+    return tasks.filter(task => task.completed);
+    default:
+      return tasks;
+  }
+})
 
 let tasks= reactive([
     {
       name: "Website design",
       description: "Define the style guide, branding and create the webdesign on Figma.",
-      completed: true
+      completed: true,
+      id:1
     },
     {
       name: "Website development",
       description: "Develop the portfolio website using Vue JS.",
-      completed: false
+      completed: false,
+      id:2
     },
     {
       name: "Hosting and infrastructure",
       description: "Define hosting, domain and infrastructure for the portfolio website.",
-      completed: false
+      completed: false,
+      id:3
     },
     {
       name: "Composition API",
       description: "Learn how to use the composition API and how it compares to the options API.",
-      completed: true
+      completed: true,
+      id:4
     },
     {
       name: "Pinia",
       description: "Learn how to setup a store using Pinia.",
-      completed: true
+      completed: true,
+      id:5
     },
     {
       name: "Groceries",
       description: "Buy rice, apples and potatos.",
-      completed: false
+      completed: false,
+      id:6
     },
     {
       name: "Bank account",
       description: "Open a bank account for my freelance business.",
-      completed: false
+      completed: false,
+      id:7
     }
 ]);
 
 function addTask(){
   if(newTask.name && newTask.description){
+    newTask.id = Math.max(...tasks.map(task => task.id)) + 1; // the biggest id
     tasks.push(newTask);
     newTask = {completed:false};
   }else
   alert("They are Blank")
-
 }
-
+function toggleCompleted(id){
+  // console.log('id', id)
+  tasks.forEach(task =>{
+    if(task.id === id){
+      task.completed =!task.completed;
+    }
+  })
+}
+function setFilter(value){
+  filterBy.value = value
+}
 </script>
 
 <template>
@@ -67,26 +97,11 @@ function addTask(){
       <input type ="text" v-model="appName">
     </div>
     
-    <div class="filters">
-      <div>
-        <p>Filter by state</p>
-        <div class="badges">
-          <div class="badge">
-            To-Do
-          </div>
-          <div class="badge">
-            Done
-          </div>
-          <span class="clear">
-            x clear
-          </span>
-        </div>
-      </div>
-    </div>
+    <Filter :filterBy="filterBy" @setFilter ="setFilter" />
 
     <div class="tasks">
 
-      <Task v-for="(task, index) in tasks" :task="task" :key="index" />
+      <Task @toggleCompleted="toggleCompleted" v-for="(task, index) in filteredTasks" :task="task" :key="index" />
       
     </div>
 
@@ -132,37 +147,7 @@ function addTask(){
 
 }
 
-.filters {
-  display: flex;
-  flex-direction: column;
-  margin: 40px 0;
 
-  p {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21px;
-    letter-spacing: 0em;
-    text-align: left;
-  }
-
-  .badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 14px 0;
-    align-items: center;
-  }
-
-  .clear {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
-    cursor: pointer;
-  }
-
-}
 
 .tasks {
   display: grid;
