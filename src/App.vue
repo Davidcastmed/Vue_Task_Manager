@@ -1,13 +1,18 @@
 <script setup>
 import { reactive, ref, computed} from 'vue';
-import Task from './components/Task.vue'
-import Filter from './components/Filter.vue'
+import Task from './components/Task.vue';
+import Filter from './components/Filter.vue';
+import ModalWindow from './components/modal/ModalWindow.vue';
+import AddTaskModal from './components/modal/AddTaskModal.vue';
+
+
 
 
 //ref for primitiv, numbers, string booleans
 const appName = "Tasks Manager";
 let newTask = {completed:false};
 let filterBy = ref("todo");
+let modalIsActive = ref(false);
 const filteredTasks = computed(()=>{
   switch(filterBy.value){
     case 'todo':
@@ -94,6 +99,11 @@ function setFilter(value){
           {{appName}}
         </h1>
       </div>
+      <div class="header-side">
+        <button @click="modalIsActive = true" class="btn secondary">
+         + Add Task
+        </button>
+      </div>
       <input type ="text" v-model="appName">
     </div>
     
@@ -104,14 +114,9 @@ function setFilter(value){
       <Task @toggleCompleted="toggleCompleted" v-for="(task, index) in filteredTasks" :task="task" :key="index" />
       
     </div>
-
-    <div class="add-task">
-      <h3>Add a new task</h3>
-      <input v-model="newTask.name" type="text" name="title" placeholder="Enter a title..."><br />
-      <textarea v-model="newTask.description" name="description" rows="4" placeholder="Enter a description..." /><br />
-      <button @click="addTask" class="btn gray">Add Task</button>
-
-    </div>
+    <ModalWindow v-if="modalIsActive" @closePopup="modalIsActive = false">
+     <AddTaskModal/>
+    </ModalWindow>
 
   </main>
   
