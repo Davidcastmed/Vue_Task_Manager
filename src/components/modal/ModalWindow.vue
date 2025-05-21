@@ -1,5 +1,7 @@
 <script setup>
 import ModalCloseButton from './ModalCloseButton.vue';
+import {useTasksStore} from '@/stores/tasksStore.js';
+const store = useTasksStore ();
 
 </script>
 
@@ -7,7 +9,7 @@ import ModalCloseButton from './ModalCloseButton.vue';
   <div class="modal-wrapper" aria-modal="true"
       role="dialog" tabindex="-1">
       <div class="inner">
-        <ModalCloseButton @click="$emit('closePopup')"/>
+        <ModalCloseButton @click="store.closeModal"/>
         <slot>
             <!-- esto es para pasar el html del componente padre al componente hijo -->
         </slot>

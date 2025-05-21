@@ -7,10 +7,12 @@ import AddTaskModal from './components/modal/AddTaskModal.vue';
 import {useTasksStore} from './stores/tasksStore.js';
 
 const store = useTasksStore ();
+store.$subscribe((mutation, state) => {
+  // persist the whole state to the local storage whenever it changes
+  localStorage.setItem('tasks', JSON.stringify(state.tasks))
+})
 //ref for primitiv, numbers, string booleans
 const appName = "Tasks Manager";
-let newTask = {completed:false};
-let modalIsActive = ref(false);
 
 
 let tasks= reactive([
@@ -72,7 +74,7 @@ let tasks= reactive([
         </h1>
       </div>
       <div class="header-side">
-        <button @click="modalIsActive = true" class="btn secondary">
+        <button @click="store.modalIsActive = true" class="btn secondary">
          + Add Task
         </button>
       </div>
@@ -86,7 +88,7 @@ let tasks= reactive([
       <Task v-for="(task, index) in store.filteredTasks" :task="task" :key="index" />
       
     </div>
-    <ModalWindow v-if="modalIsActive" @closePopup="modalIsActive = false">
+    <ModalWindow v-if="store.modalIsActive" >
      <AddTaskModal/>
     </ModalWindow>
 
