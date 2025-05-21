@@ -13,9 +13,7 @@ store.$subscribe((mutation, state) => {
 //ref for primitiv, numbers, string booleans
 const appName = "Tasks Manager";
 </script>
-
 <template>
-
   <main class="container">
     <div class="header">
       <div class="header-side">
@@ -25,86 +23,68 @@ const appName = "Tasks Manager";
       </div>
       <div class="header-side">
         <button @click="store.modalIsActive = true" class="btn secondary">
-         + Add Task
+      + Add Task
         </button>
       </div>
-      <!-- <input type ="text" v-model="appName"> -->
     </div>
     
     <Filter/>
 
     <div class="tasks">
-
-      <Task v-for="(task, index) in store.filteredTasks" :task="task" :key="index" />
-      
+      <Task v-for="(task, index) in store.filteredTasks" :task="task" :key="index" />   
     </div>
     <ModalWindow v-if="store.modalIsActive" >
-     <AddTaskModal/>
+    <AddTaskModal/>
     </ModalWindow>
 
   </main>
-  
-   
-
 </template>
 
-
 <style lang="scss" scoped>
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .header-side {
+  .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
-    h1 {
-      text-transform: capitalize;
-      font-size: 42px;
-      font-weight: 700;
-      line-height: 47px;
-      letter-spacing: 0em;
-      text-align: left;
+    .header-side {
+      display: flex;
+      align-items: center;
+
+      h1 {
+        text-transform: capitalize;
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 47px;
+        letter-spacing: 0em;
+        text-align: left;
+      }
+
+      .secondary {
+        margin-left: 12px;
+      }
     }
 
-    .secondary {
-      margin-left: 12px;
+  }
+  .tasks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
     }
   }
-
-}
-
-
-
-.tasks {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
+  .add-task {
+    margin-top: 60px;
+    input, textarea {
+      width: 360px;
+      max-width: 100%;
+      margin-top: 12px;
+      padding: 5px;
+    }
+    button {
+      width: 360px;
+      margin-top: 12px;
+    }
   }
-}
-
-
-
-.add-task {
-  margin-top: 60px;
-
-  input, textarea {
-    width: 360px;
-    max-width: 100%;
-    margin-top: 12px;
-    padding: 5px;
-  }
-
-  button {
-    width: 360px;
-    margin-top: 12px;
-  }
-}
-
-
 </style>

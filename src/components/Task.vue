@@ -1,11 +1,10 @@
 <script setup>
 import {useTasksStore} from '@/stores/tasksStore.js';
 const store = useTasksStore ();
-const props = defineProps(['task'])
+const props = defineProps(['task']);
 </script>
-
 <template>
- <div class="task">
+<div class="task">
         <h3>
           {{ task.name }}
         </h3>
@@ -30,8 +29,6 @@ const props = defineProps(['task'])
   padding: 20px;
   border-radius: 12px;
   position: relative;
-
-
   h3 {
     font-size: 20px;
     font-weight: 700;
@@ -39,7 +36,6 @@ const props = defineProps(['task'])
     letter-spacing: 0em;
     text-align: left;
   }
-
   p {
     margin-top: 24px;
     margin-bottom: 12px;
@@ -49,8 +45,6 @@ const props = defineProps(['task'])
     letter-spacing: 0em;
     text-align: left;
   }
-
-
   .task-check {
     display: flex;
     align-items: center;
@@ -58,7 +52,6 @@ const props = defineProps(['task'])
     position: absolute;
     bottom: 10px;
     right: 10px;
-
     label {
       font-size: 13px;
       font-weight: 400;
@@ -68,7 +61,6 @@ const props = defineProps(['task'])
       margin-left: 5px;
       cursor: pointer;
     }
-
     input {
       display: flex;
       justify-content: center;
@@ -79,12 +71,9 @@ const props = defineProps(['task'])
       border: 0.77px solid #AEAEB2;
       appearance: none;
       cursor: pointer;
-
-
       &:checked {
         background-color: #0A7AFF;
         border-color: #0A7AFF;
-
         &::before {
           content: '';
           display: block;

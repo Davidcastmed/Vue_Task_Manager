@@ -1,34 +1,30 @@
 <script setup>
 import {useTasksStore} from '@/stores/tasksStore.js';
 const store = useTasksStore ();
-
-
 </script>
 <template>
-    <div class="filters">
-      <div>
-        <p>Filter by state</p>
-        <div class="badges">
-          <div @click= "store.setFilter('todo')" class="badge" :class="{selected:store.filterBy === 'todo'}">
-            To-Do
-          </div>
-          <div  @click= "store.setFilter('done')"  class="badge" :class="{selected:store.filterBy === 'done'}">
-            Done
-          </div>
-          <span @click= "store.setFilter('')" v-if="store.filterBy" class="clear">
-            x clear
-          </span>
-        </div>
+<div class="filters">
+  <div>
+    <p>Filter by state</p>
+    <div class="badges">
+      <div @click= "store.setFilter('todo')" class="badge" :class="{selected:store.filterBy === 'todo'}">
+        To-Do
       </div>
+      <div  @click= "store.setFilter('done')"  class="badge" :class="{selected:store.filterBy === 'done'}">
+        Done
+      </div>
+      <span @click= "store.setFilter('')" v-if="store.filterBy" class="clear">
+        x clear
+      </span>
     </div>
+  </div>
+</div>
 </template>
-
 <style lang="scss" scoped>
 .filters {
   display: flex;
   flex-direction: column;
   margin: 40px 0;
-
   p {
     font-size: 16px;
     font-weight: 400;
@@ -36,7 +32,6 @@ const store = useTasksStore ();
     letter-spacing: 0em;
     text-align: left;
   }
-
   .badges {
     display: flex;
     flex-wrap: wrap;
@@ -56,13 +51,11 @@ const store = useTasksStore ();
     cursor: pointer;
     user-select: none;
     }
-
     .badge.selected {
         background-color: #E42C5F;
         color: var(--white-color);
     }
 }
-
   .clear {
     font-size: 14px;
     font-weight: 400;
@@ -71,6 +64,5 @@ const store = useTasksStore ();
     text-align: left;
     cursor: pointer;
   }
-
 }
 </style>
