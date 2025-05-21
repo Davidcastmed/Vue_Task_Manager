@@ -7,24 +7,11 @@ import AddTaskModal from './components/modal/AddTaskModal.vue';
 import {useTasksStore} from './stores/tasksStore.js';
 
 const store = useTasksStore ();
-
-
-
 //ref for primitiv, numbers, string booleans
 const appName = "Tasks Manager";
 let newTask = {completed:false};
-let filterBy = ref("todo");
 let modalIsActive = ref(false);
-const filteredTasks = computed(()=>{
-  switch(filterBy.value){
-    case 'todo':
-      return store.tasks.filter(task => !task.completed);
-    case 'done':
-    return store.tasks.filter(task => task.completed);
-    default:
-      return store.tasks;
-  }
-})
+
 
 let tasks= reactive([
     {
@@ -71,25 +58,8 @@ let tasks= reactive([
     }
 ]);
 
-function addTask(){
-  if(newTask.name && newTask.description){
-    newTask.id = Math.max(...store.tasks.map(task => task.id)) + 1; // the biggest id
-    store.tasks.push(newTask);
-    newTask = {completed:false};
-  }else
-  alert("They are Blank")
-}
-function toggleCompleted(id){
-  // console.log('id', id)
-  tasks.forEach(task =>{
-    if(task.id === id){
-      store.task.completed =!task.completed;
-    }
-  })
-}
-function setFilter(value){
-  filterBy.value = value
-}
+
+
 </script>
 
 <template>
@@ -109,11 +79,11 @@ function setFilter(value){
       <input type ="text" v-model="appName">
     </div>
     
-    <Filter :filterBy="filterBy" @setFilter ="setFilter" />
+    <Filter/>
 
     <div class="tasks">
 
-      <Task @toggleCompleted="toggleCompleted" v-for="(task, index) in filteredTasks" :task="task" :key="index" />
+      <Task v-for="(task, index) in store.filteredTasks" :task="task" :key="index" />
       
     </div>
     <ModalWindow v-if="modalIsActive" @closePopup="modalIsActive = false">
